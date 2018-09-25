@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>c2d376cd-01d3-4161-ae70-8caf697a9abf</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>33d27b96-0970-45dd-ba5c-04a726dfdc18</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dds;dlg;fbx;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{84d6d441-60bd-4f09-a15b-cc492478fefc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="StepTimer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceResources.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="GridFloor.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="Obj3D.h" />
+    <ClInclude Include="DebugSphere.h" />
+    <ClInclude Include="DebugCamera.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="DebugCapsule.h" />
+    <ClInclude Include="CollisionCapsule.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="CollisionSphere.h" />
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="BulletE.h" />
+    <ClInclude Include="Floar.h" />
+    <ClInclude Include="Saber.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="DeviceResources.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="GridFloor.cpp" />
+    <ClCompile Include="Obj3D.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="DebugSphere.cpp" />
+    <ClCompile Include="DebugCamera.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DebugCapsule.cpp" />
+    <ClCompile Include="CollisionCapsule.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="CollisionSphere.cpp" />
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="BulletE.cpp" />
+    <ClCompile Include="Floar.cpp" />
+    <ClCompile Include="Saber.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="directx.ico">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="settings.manifest">
+      <Filter>Assets</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="FBX\shadow.FBX">
+      <Filter>Models</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\Player.FBX">
+      <Filter>Models</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\RoboEnemy.FBX">
+      <Filter>Models</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\Beem.FBX">
+      <Filter>Models</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\BeemE.FBX">
+      <Filter>Models</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\Exsky.FBX">
+      <Filter>Models</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\floor.FBX">
+      <Filter>Models</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\Saber.FBX">
+      <Filter>Models</Filter>
+    </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DebugCapsule.inc" />
+  </ItemGroup>
+</Project>
