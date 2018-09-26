@@ -96,6 +96,8 @@ private:
 	//プレイヤーの処理関数
 	void PlayerUpdate();
 
+	void PlayerInput(DX::StepTimer const& timer);
+
     // Device resources.
     std::unique_ptr<DX::DeviceResources>    m_deviceResources;
 

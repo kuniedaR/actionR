@@ -594,8 +594,8 @@ void Game::OnDeviceRestored()
     CreateWindowSizeDependentResources();
 }
 
-//プレイヤーの処理関数
-void Game::PlayerUpdate()
+// 入力処理
+void Game::PlayerInput(DX::StepTimer const& timer)
 {
 	float elapsedTime = float(timer.GetElapsedSeconds());
 
