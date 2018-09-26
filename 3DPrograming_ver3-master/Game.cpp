@@ -88,9 +88,6 @@ void Game::Update(DX::StepTimer const& timer)
 {
     float elapsedTime = float(timer.GetElapsedSeconds());
 
-    // TODO: Add your game logic here.
-    elapsedTime;
-
 	//敵の操作
 	//キー入力
 	auto enemykb = Keyboard::Get().GetState();
@@ -119,7 +116,8 @@ void Game::Update(DX::StepTimer const& timer)
 		m_enemy->Move(Enemy::LEFT_TURN);
 	}
 
-	
+	//プレイヤーの更新
+	m_player->Update(elapsedTime);
 
 	//敵機の更新
 	m_enemy->Update(elapsedTime);
@@ -132,50 +130,6 @@ void Game::Update(DX::StepTimer const& timer)
 
 	//サーベルの更新
 	m_saber->Update();
-
-	//サーベルキートリガーの宣言
-	Keyboard::State saberkb = m_keyboard->GetState();
-	//サーベルキートリガーの更新
-	m_trackerS.Update(saberkb);
-	if (m_trackerS.pressed.Enter)
-	{
-		//フラグが立ったたらサーベル描画
-		m_drawsaberFlag = true;
-
-		//サーベルがプレイヤーの位置を所得
-		m_saber->SetTarget(m_player->GetPosition());
-
-		//プレイヤーの左腕の位置にサーベル描画
-		Vector3 sa(-0.45f, -0.55f, -0.1f);
-
-		float dirs = m_player->GetDirection();
-		//サーベルの回転
-		Quaternion qu = Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), dirs);
-		sa = Vector3::Transform(sa, qu);
-
-		//サーベルがプレイヤーの位置を追いかける
-		m_saber->SetPosition(sa + m_player->GetPosition());
-
-		m_view = m_saber->GetView();
-	}
-
-	//自弾キートリガーの宣言
-	Keyboard::State bulletkb = m_keyboard->GetState();
-	//自弾キートリガーの更新
-	m_tracker.Update(bulletkb);
-	//エンターキー押したら自弾の発射
-	if (m_tracker.pressed.Space)
-	{
-		//フラグが立ったたら自弾描画
-		m_drawbulletFlag = true;
-		//プレイヤーの右腕の位置に自弾描画
-		Vector3 sa(0.45f, -0.4f, -0.1f);
-		m_bullet->SetPosition(sa + m_player->GetPosition());
-		//プレイヤーの向いてる方向に撃つ
-		m_bullet->SetDirection(m_player->GetDirection());
-		//自弾直進
-		m_bullet->Move(Bullet::STRAIGHT);
-	}
 
 	//敵弾キートリガーの宣言
 	Keyboard::State bulletEkb = m_keyboard->GetState();
@@ -442,8 +396,6 @@ void Game::CreateDeviceDependentResources()
     ID3D11Device* device = m_deviceResources->GetD3DDevice();
 	ID3D11DeviceContext* context =  m_deviceResources->GetD3DDeviceContext();
 
-    // TODO: Initialize device dependent objects here (independent of window size).
-
 	// コモンステートの作成
 	m_states = std::make_unique<CommonStates>(device);
 
@@ -595,12 +547,8 @@ void Game::OnDeviceRestored()
 }
 
 // 入力処理
-void Game::PlayerInput(DX::StepTimer const& timer)
+void Game::PlayerInput()
 {
-	float elapsedTime = float(timer.GetElapsedSeconds());
-
-	//プレイヤーの更新
-	m_player->Update(elapsedTime);
 
 	//プレイヤーの操作
 	//キー入力
@@ -629,6 +577,49 @@ void Game::PlayerInput(DX::StepTimer const& timer)
 		//左に曲がる
 		m_player->Move(Player::LEFT_TURN);
 	}
-}
 
+	//サーベルキートリガーの宣言
+	Keyboard::State saberkb = m_keyboard->GetState();
+	//サーベルキートリガーの更新
+	m_trackerS.Update(saberkb);
+	if (m_trackerS.pressed.Enter)
+	{
+		//フラグが立ったたらサーベル描画
+		m_drawsaberFlag = true;
+
+		//サーベルがプレイヤーの位置を所得
+		m_saber->SetTarget(m_player->GetPosition());
+
+		//プレイヤーの左腕の位置にサーベル描画
+		Vector3 sa(-0.45f, -0.55f, -0.1f);
+
+		float dirs = m_player->GetDirection();
+		//サーベルの回転
+		Quaternion qu = Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), dirs);
+		sa = Vector3::Transform(sa, qu);
+
+		//サーベルがプレイヤーの位置を追いかける
+		m_saber->SetPosition(sa + m_player->GetPosition());
+
+		m_view = m_saber->GetView();
+	}
+
+	//自弾キートリガーの宣言
+	Keyboard::State bulletkb = m_keyboard->GetState();
+	//自弾キートリガーの更新
+	m_tracker.Update(bulletkb);
+	//エンターキー押したら自弾の発射
+	if (m_tracker.pressed.Space)
+	{
+		//フラグが立ったたら自弾描画
+		m_drawbulletFlag = true;
+		//プレイヤーの右腕の位置に自弾描画
+		Vector3 sa(0.45f, -0.4f, -0.1f);
+		m_bullet->SetPosition(sa + m_player->GetPosition());
+		//プレイヤーの向いてる方向に撃つ
+		m_bullet->SetDirection(m_player->GetDirection());
+		//自弾直進
+		m_bullet->Move(Bullet::STRAIGHT);
+	}
+}
 #pragma endregion
