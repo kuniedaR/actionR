@@ -88,40 +88,14 @@ void Game::Update(DX::StepTimer const& timer)
 {
     float elapsedTime = float(timer.GetElapsedSeconds());
 
+	//プレイヤーの入力処理の関数読み込み
 	this->PlayerInput(timer);
-
+	//敵の入力処理の関数読み込み
 	this->EnemyInput(timer);
-
-	//this->HitPlayer();
-	
-	//敵と自弾の当たり判定
-	m_hitFlag = false;
-	if (m_drawbulletFlag == true)
-	{
-		if (Collision::HitCheck_Capsule2Capsule(m_enemy->GetCollision(), m_bullet->GetCollision()) == true)
-		{
-			//体力を無くす
-			m_helsE -= 30;
-			//自弾の移動を止める
-			m_bullet->Move(Bullet::STOP);
-			//自弾の描画を消す
-			m_drawbulletFlag = false;
-		}
-	}
-	//プレイヤーと敵弾の当たり判定
-	m_hitFlag = false;
-	if (m_drawbulletEFlag == true)
-	{
-		if (Collision::HitCheck_Capsule2Capsule(m_player->GetCollision(), m_bulletE->GetCollision()) == true)
-		{
-			//体力を無くす
-			m_hels -= 30;
-			//敵弾の移動を止める
-			m_bulletE->Move(BulletE::STOP);
-			//敵弾の描画を消す
-			m_drawbulletEFlag = false;
-		}
-	}
+	//プレイヤーの当たり判定の関数読み込み
+	this->CollisionPlayer();
+	//敵の当たり判定の関数読み込み
+	this->CollisionEnemy();
 
 	//カメラがプレイヤーの位置を所得
 	m_camera.SetTarget(m_player->GetPosition());
@@ -634,8 +608,46 @@ void Game::EnemyInput(DX::StepTimer const& timer)
 	}
 }
 
-//void Game::HitPlayer()
+//プレイヤーと敵弾の当たり判定
+void Game::CollisionPlayer()
+{
+	//プレイヤーと敵弾の当たり判定
+	m_hitFlag = false;
+	if (m_drawbulletEFlag == true)
+	{
+		if (Collision::HitCheck_Capsule2Capsule(m_player->GetCollision(), m_bulletE->GetCollision()) == true)
+		{
+			//体力を無くす
+			m_hels -= 30;
+			//敵弾の移動を止める
+			m_bulletE->Move(BulletE::STOP);
+			//敵弾の描画を消す
+			m_drawbulletEFlag = false;
+		}
+	}
+}
+
+//敵とプレイヤーの弾の当たり判定
+void Game::CollisionEnemy()
+{
+	//敵と自弾の当たり判定
+	m_hitFlag = false;
+	if (m_drawbulletFlag == true)
+	{
+		if (Collision::HitCheck_Capsule2Capsule(m_enemy->GetCollision(), m_bullet->GetCollision()) == true)
+		{
+			//体力を無くす
+			m_helsE -= 30;
+			//自弾の移動を止める
+			m_bullet->Move(Bullet::STOP);
+			//自弾の描画を消す
+			m_drawbulletFlag = false;
+		}
+	}
+}
+
+//void Game::Camera()
 //{
-//	
+//
 //}
 #pragma endregion

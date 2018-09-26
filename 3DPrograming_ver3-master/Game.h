@@ -100,7 +100,13 @@ private:
 	void EnemyInput(DX::StepTimer const& timer);
 
 	//プレイヤーと敵弾の当たり判定
-	void HitPlayer();
+	void CollisionPlayer();
+
+	//敵と自弾の当たり判定
+	void CollisionEnemy();
+
+	//カメラの処理
+	//void Camera();
 
     // Device resources.
     std::unique_ptr<DX::DeviceResources>    m_deviceResources;
