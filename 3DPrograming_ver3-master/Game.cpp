@@ -353,7 +353,7 @@ void Game::CreateDeviceDependentResources()
 	capsule.r = 0.5f;		//半径
 	m_enemy->SetCollision(capsule);
 
-	//弾の作成
+	//自弾の作成
 	m_bullet = std::make_unique<Bullet>();
 	m_bullet->SetGame(this);
 	m_bullet->SetModel(m_bulletModel.get());
@@ -464,7 +464,7 @@ void Game::PlayerInput(DX::StepTimer const& timer)
 	}
 	//下キーが押された
 	if (playerkb.Down)
-	{
+	{	
 		//後ろに移動
 		m_player->Move(Player::BACK);
 	}

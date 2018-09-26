@@ -34,9 +34,6 @@ void BulletE::Render()
 		//モデルを描画
 		m_models->Draw(m_game->GetContext(), *m_game->GetStates(),
 			m_world, m_game->GetView(), m_game->GetProjection());
-
-		//デバック用コリジョンの表示
-		//DrawCollision();
 	}
 }
 

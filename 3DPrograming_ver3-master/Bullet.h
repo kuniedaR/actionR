@@ -45,11 +45,6 @@ public:
 
 	DirectX::SimpleMath::Vector3 GetPosition();
 
-	DirectX::SimpleMath::Matrix GetView();
-
-	//プレイヤーの位置を所得する関数
-	void SetTarget(DirectX::SimpleMath::Vector3 pos);
-
 	float GetDirection();
 
 	void SetDirection(float direction);

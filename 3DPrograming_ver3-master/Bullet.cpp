@@ -56,16 +56,3 @@ void Bullet::SetDirection(float direction)
 {
 	m_direction = direction;
 }
-
-// プレイヤーの位置を所得する関数
-void Bullet::SetTarget(DirectX::SimpleMath::Vector3 pos)
-{
-	m_target = pos;
-}
-
-DirectX::SimpleMath::Matrix Bullet::GetView()
-{
-	Matrix b = Matrix::CreateLookAt(m_bulletPosition, m_target, Vector3(0.0f, 1.0f, 0.0f));
-
-	return b;
-}
