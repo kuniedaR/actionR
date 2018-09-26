@@ -98,18 +98,8 @@ void Game::Update(DX::StepTimer const& timer)
 	this->CollisionEnemy();
 	//カメラの関数読み込み
 	this->CameraMove();
-
-	//敵体力ゲージが0のになったら敵を消す
-	if (m_helsE < 0)
-	{
-		exit(0);
-	}
-
-	//プレイヤー体力ゲージが0のになったら敵を消す
-	if (m_hels < 0)
-	{
-		exit(0);
-	}
+	//体力の関数読み込み
+	this->Physical();
 }
 
 
@@ -536,6 +526,7 @@ void Game::PlayerInput(DX::StepTimer const& timer)
 	}
 }
 
+//敵の入力処理
 void Game::EnemyInput(DX::StepTimer const& timer)
 {
 	float elapsedTime = float(timer.GetElapsedSeconds());
@@ -632,6 +623,7 @@ void Game::CollisionEnemy()
 	}
 }
 
+//カメラの処理
 void Game::CameraMove()
 {
 	//カメラがプレイヤーの位置を所得
@@ -649,5 +641,21 @@ void Game::CameraMove()
 	m_camera.SetCameraPosition(a + m_player->GetPosition());
 
 	m_view = m_camera.GetView();
+}
+
+//体力の処理
+void Game::Physical()
+{
+	//敵体力ゲージが0のになったら敵を消す
+	if (m_helsE < 0)
+	{
+		exit(0);
+	}
+
+	//プレイヤー体力ゲージが0のになったら敵を消す
+	if (m_hels < 0)
+	{
+		exit(0);
+	}
 }
 #pragma endregion

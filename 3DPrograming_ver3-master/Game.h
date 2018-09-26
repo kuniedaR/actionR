@@ -108,6 +108,9 @@ private:
 	//カメラの処理
 	void CameraMove();
 
+	//体力処理
+	void Physical();
+
     // Device resources.
     std::unique_ptr<DX::DeviceResources>    m_deviceResources;
 
