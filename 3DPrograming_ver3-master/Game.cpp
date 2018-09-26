@@ -96,22 +96,8 @@ void Game::Update(DX::StepTimer const& timer)
 	this->CollisionPlayer();
 	//敵の当たり判定の関数読み込み
 	this->CollisionEnemy();
-
-	//カメラがプレイヤーの位置を所得
-	m_camera.SetTarget(m_player->GetPosition());
-
-	//カメラの位置
-	Vector3 a(0.0f, 0.5f, 1.5f);
-
-	float dir = m_player->GetDirection();
-	//カメラの回転
-	Quaternion q = Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), dir);
-	a = Vector3::Transform(a, q);
-
-	//カメラがプレイヤーの位置を追いかける
-	m_camera.SetCameraPosition(a + m_player->GetPosition());
-
-	m_view = m_camera.GetView();
+	//カメラの関数読み込み
+	this->CameraMove();
 
 	//敵体力ゲージが0のになったら敵を消す
 	if (m_helsE < 0)
@@ -646,8 +632,22 @@ void Game::CollisionEnemy()
 	}
 }
 
-//void Game::Camera()
-//{
-//
-//}
+void Game::CameraMove()
+{
+	//カメラがプレイヤーの位置を所得
+	m_camera.SetTarget(m_player->GetPosition());
+
+	//カメラの位置
+	Vector3 a(0.0f, 0.5f, 1.5f);
+
+	float dir = m_player->GetDirection();
+	//カメラの回転
+	Quaternion q = Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), dir);
+	a = Vector3::Transform(a, q);
+
+	//カメラがプレイヤーの位置を追いかける
+	m_camera.SetCameraPosition(a + m_player->GetPosition());
+
+	m_view = m_camera.GetView();
+}
 #pragma endregion

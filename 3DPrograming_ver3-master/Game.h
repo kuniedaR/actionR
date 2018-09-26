@@ -106,7 +106,7 @@ private:
 	void CollisionEnemy();
 
 	//カメラの処理
-	//void Camera();
+	void CameraMove();
 
     // Device resources.
     std::unique_ptr<DX::DeviceResources>    m_deviceResources;
