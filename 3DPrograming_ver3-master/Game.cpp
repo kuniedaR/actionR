@@ -88,67 +88,11 @@ void Game::Update(DX::StepTimer const& timer)
 {
     float elapsedTime = float(timer.GetElapsedSeconds());
 
-	//敵の操作
-	//キー入力
-	auto enemykb = Keyboard::Get().GetState();
-	//	Wキーが押された
-	if (enemykb.W)
-	{
-		//前に移動
-		m_enemy->Move(Enemy::FORWARD);
-	}
-	//Sキーが押された
-	if (enemykb.S)
-	{
-		//後ろに移動
-		m_enemy->Move(Enemy::BACK);
-	}
-	//Dキーが押された
-	if (enemykb.D)
-	{
-		//右に曲がる
-		m_enemy->Move(Enemy::RIGHT_TURN);
-	}
-	//Aキーが押された
-	if (enemykb.A)
-	{
-		//左に曲がる
-		m_enemy->Move(Enemy::LEFT_TURN);
-	}
+	this->PlayerInput(timer);
 
-	//プレイヤーの更新
-	m_player->Update(elapsedTime);
+	this->EnemyInput(timer);
 
-	//敵機の更新
-	m_enemy->Update(elapsedTime);
-
-	//弾の更新
-	m_bullet->Update(elapsedTime);
-
-	//敵弾の更新
-	m_bulletE->Update(elapsedTime);
-
-	//サーベルの更新
-	m_saber->Update();
-
-	//敵弾キートリガーの宣言
-	Keyboard::State bulletEkb = m_keyboard->GetState();
-	//敵弾キートリガーの更新
-	m_trackerE.Update(bulletEkb);
-	//スペースキー押したら弾の発射
-	if (m_trackerE.pressed.R)
-	{
-		//フラグが立ったたら敵弾描画
-		m_drawbulletEFlag = true;
-		//敵の位置に敵弾描画
-		Vector3 enemyPos = m_enemy->GetPosition();
-		enemyPos.y = 1.8f;
-		m_bulletE->SetPosition(enemyPos);
-		//敵の向いてる方向に撃つ
-		m_bulletE->SetDirection(m_enemy->GetDirection());
-		//敵弾直進
-		m_bulletE->Move(BulletE::STRAIGHT);
-	}
+	//this->HitPlayer();
 	
 	//敵と自弾の当たり判定
 	m_hitFlag = false;
@@ -164,7 +108,6 @@ void Game::Update(DX::StepTimer const& timer)
 			m_drawbulletFlag = false;
 		}
 	}
-
 	//プレイヤーと敵弾の当たり判定
 	m_hitFlag = false;
 	if (m_drawbulletEFlag == true)
@@ -546,9 +489,19 @@ void Game::OnDeviceRestored()
     CreateWindowSizeDependentResources();
 }
 
-// 入力処理
-void Game::PlayerInput()
+// プレイヤーの入力処理
+void Game::PlayerInput(DX::StepTimer const& timer)
 {
+	float elapsedTime = float(timer.GetElapsedSeconds());
+
+	//プレイヤーの更新
+	m_player->Update(elapsedTime);
+
+	//弾の更新
+	m_bullet->Update(elapsedTime);
+
+	//サーベルの更新
+	m_saber->Update();
 
 	//プレイヤーの操作
 	//キー入力
@@ -622,4 +575,67 @@ void Game::PlayerInput()
 		m_bullet->Move(Bullet::STRAIGHT);
 	}
 }
+
+void Game::EnemyInput(DX::StepTimer const& timer)
+{
+	float elapsedTime = float(timer.GetElapsedSeconds());
+
+	//敵機の更新
+	m_enemy->Update(elapsedTime);
+
+	//敵弾の更新
+	m_bulletE->Update(elapsedTime);
+
+	//敵の操作
+	//キー入力
+	auto enemykb = Keyboard::Get().GetState();
+	//	Wキーが押された
+	if (enemykb.W)
+	{
+		//前に移動
+		m_enemy->Move(Enemy::FORWARD);
+	}
+	//Sキーが押された
+	if (enemykb.S)
+	{
+		//後ろに移動
+		m_enemy->Move(Enemy::BACK);
+	}
+	//Dキーが押された
+	if (enemykb.D)
+	{
+		//右に曲がる
+		m_enemy->Move(Enemy::RIGHT_TURN);
+	}
+	//Aキーが押された
+	if (enemykb.A)
+	{
+		//左に曲がる
+		m_enemy->Move(Enemy::LEFT_TURN);
+	}
+
+	//敵弾キートリガーの宣言
+	Keyboard::State bulletEkb = m_keyboard->GetState();
+	//敵弾キートリガーの更新
+	m_trackerE.Update(bulletEkb);
+	//スペースキー押したら弾の発射
+	if (m_trackerE.pressed.R)
+	{
+		//フラグが立ったたら敵弾描画
+		m_drawbulletEFlag = true;
+		//敵の位置に敵弾描画
+		Vector3 enemyPos = m_enemy->GetPosition();
+		enemyPos.y = 1.8f;
+		m_bulletE->SetPosition(enemyPos);
+		//敵の向いてる方向に撃つ
+		m_bulletE->SetDirection(m_enemy->GetDirection());
+		//敵弾直進
+		m_bulletE->Move(BulletE::STRAIGHT);
+	}
+}
+
+//void Game::HitPlayer()
+//{
+//	
+//}
 #pragma endregion

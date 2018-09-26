@@ -94,10 +94,13 @@ private:
     void CreateWindowSizeDependentResources();
 
 	//プレイヤーの入力処理
-	void PlayerInput();
+	void PlayerInput(DX::StepTimer const& timer);
 
-	////敵の入力処理
-	//void EnemyInput();
+	//敵の入力処理
+	void EnemyInput(DX::StepTimer const& timer);
+
+	//プレイヤーと敵弾の当たり判定
+	void HitPlayer();
 
     // Device resources.
     std::unique_ptr<DX::DeviceResources>    m_deviceResources;
