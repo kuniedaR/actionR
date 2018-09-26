@@ -36,6 +36,7 @@
     <ClInclude Include="BulletE.h" />
     <ClInclude Include="Floar.h" />
     <ClInclude Include="Saber.h" />
+    <ClInclude Include="BulletManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -59,6 +60,7 @@
     <ClCompile Include="BulletE.cpp" />
     <ClCompile Include="Floar.cpp" />
     <ClCompile Include="Saber.cpp" />
+    <ClCompile Include="BulletManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

@@ -162,7 +162,7 @@ private:
 	// 敵
 	std::unique_ptr<Enemy> m_enemy;
 
-	// 自段モデル 
+	// 自弾モデル 
 	std::unique_ptr<DirectX::Model> m_bulletModel;
 
 	// 自弾

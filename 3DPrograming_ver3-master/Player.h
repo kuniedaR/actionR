@@ -1,5 +1,7 @@
 #pragma once
 #include "CollisionCapsule.h"
+#include <utility>
+#include <list>
 
 //プレイヤークラス
 class Player : public CollisionCapsule
@@ -21,6 +23,7 @@ private:
 	//移動フラグ
 	MOVE m_moveFlag;
 
+	std::list<std::pair<int,float>> test;
 public:
 	//コンストラクタ
 	Player();
