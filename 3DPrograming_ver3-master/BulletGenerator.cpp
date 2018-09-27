@@ -5,26 +5,21 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-BulletGenerator::BulletGenerator()
+BulletGenerator::BulletGenerator(ID3D11Device* device, EffectFactory& fx)
 {
+	// 弾をロードしてモデルハンドルを取得する
+	m_playerModel = Model::CreateFromCMO(device, playerModelPath, fx);
 }
 
 BulletGenerator::~BulletGenerator()
 {
+
 }
 
-Bullet* BulletGenerator::Create(ID3D11Device* device)
+Bullet* BulletGenerator::Create()
 {
-	// エフェクトファクトリー 
-	EffectFactory fx(device);
-
-	fx.SetDirectory(L"Resources\\Models");
-
-	// 弾をロードしてモデルハンドルを取得する
-	auto model = Model::CreateFromCMO(device, playerModelPath, fx);
-
 	auto bullet = new Bullet(GameDefine::Player);
-	bullet->SetModel(model.get());
+	bullet->SetModel(m_playerModel.get());
 
 	//カプセルの定義
 	Collision::Capsule capsule;

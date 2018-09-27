@@ -48,9 +48,6 @@ void Game::Initialize(HWND window, int width, int height)
 	//弾の管理
 	m_bulletManager = new BulletManager();
 
-	//弾の作成
-	m_bulletGenerator = new BulletGenerator();
-
 	//プレイヤーの初期位置
 	m_playerpos = Vector3(0.0f, 2.3f, 10.0f);
 
@@ -91,6 +88,8 @@ void Game::Update(DX::StepTimer const& timer)
 	this->PlayerInput(timer);
 	//敵の入力処理の関数読み込み
 	this->EnemyInput(timer);
+	//弾管理クラスの更新
+	m_bulletManager->Update(elapsedTime);
 	//プレイヤーの当たり判定の関数読み込み
 	this->CollisionPlayer();
 	//敵の当たり判定の関数読み込み
@@ -320,6 +319,9 @@ void Game::CreateDeviceDependentResources()
 	// 敵弾をロードしてモデルハンドルを取得する
 	m_bulletEModel = Model::CreateFromCMO(device, L"Resources\\Models\\BeemE.cmo", fx);
 
+	//弾の作成
+	m_bulletGenerator = new BulletGenerator(device,fx);
+
 	//カプセルの定義
 	Collision::Capsule capsule;
 
@@ -412,15 +414,6 @@ void Game::PlayerInput(DX::StepTimer const& timer)
 {
 	float elapsedTime = float(timer.GetElapsedSeconds());
 
-	//プレイヤーの更新
-	m_player->Update(elapsedTime);
-
-	//弾管理クラスの更新
-	m_bulletManager->Update(elapsedTime);
-
-	//サーベルの更新
-	m_saber->Update();
-
 	//プレイヤーの操作
 	//キー入力
 	auto playerkb = Keyboard::Get().GetState();
@@ -453,6 +446,7 @@ void Game::PlayerInput(DX::StepTimer const& timer)
 	Keyboard::State saberkb = m_keyboard->GetState();
 	//サーベルキートリガーの更新
 	m_trackerS.Update(saberkb);
+	//エンターキーを押したらサーベルの出現
 	if (m_trackerS.pressed.Enter)
 	{
 		//フラグが立ったたらサーベル描画
@@ -479,7 +473,7 @@ void Game::PlayerInput(DX::StepTimer const& timer)
 	Keyboard::State bulletkb = m_keyboard->GetState();
 	//自弾キートリガーの更新
 	m_tracker.Update(bulletkb);
-	//エンターキー押したら自弾の発射
+	//スペースキー押したら自弾の発射
 	if (m_tracker.pressed.Space)
 	{
 		//プレイヤーの右腕の位置に自弾描画
@@ -487,7 +481,7 @@ void Game::PlayerInput(DX::StepTimer const& timer)
 
 		ID3D11Device* device = m_deviceResources->GetD3DDevice();
 
-		auto bullet = m_bulletGenerator->Create(device);
+		auto bullet = m_bulletGenerator->Create();
 		bullet->SetGame(this);
 
 		bullet->SetPosition(sa + m_player->GetPosition());
@@ -497,15 +491,18 @@ void Game::PlayerInput(DX::StepTimer const& timer)
 		bullet->Move(Bullet::STRAIGHT);
 		m_bulletManager->SetBullet(bullet);
 	}
+
+	//プレイヤーの更新
+	m_player->Update(elapsedTime);
+
+	//サーベルの更新
+	m_saber->Update();
 }
 
 //敵の入力処理
 void Game::EnemyInput(DX::StepTimer const& timer)
 {
 	float elapsedTime = float(timer.GetElapsedSeconds());
-
-	//敵機の更新
-	m_enemy->Update(elapsedTime);
 
 	//敵の操作
 	//キー入力
@@ -539,12 +536,12 @@ void Game::EnemyInput(DX::StepTimer const& timer)
 	Keyboard::State bulletEkb = m_keyboard->GetState();
 	//敵弾キートリガーの更新
 	m_trackerE.Update(bulletEkb);
-	//スペースキー押したら弾の発射
+	//Rキー押したら弾の発射
 	if (m_trackerE.pressed.R)
 	{
 		ID3D11Device* device = m_deviceResources->GetD3DDevice();
 
-		auto bullet = m_bulletGenerator->Create(device);
+		auto bullet = m_bulletGenerator->Create();
 		bullet->SetGame(this);
 
 		//敵の位置に敵弾描画
@@ -557,6 +554,9 @@ void Game::EnemyInput(DX::StepTimer const& timer)
 		bullet->Move(Bullet::STRAIGHT);
 		m_bulletManager->SetBullet(bullet);
 	}
+
+	//敵機の更新
+	m_enemy->Update(elapsedTime);
 }
 
 //プレイヤーと敵弾の当たり判定

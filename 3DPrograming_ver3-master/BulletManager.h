@@ -9,12 +9,15 @@ private:
 	std::list<Bullet*> m_bullets;
 
 public:
-
+	//’e‚Æ‚Ì“–‚½‚è”»’è
 	Bullet* HitCheck(CollisionCapsule& collision);
-
+	//’e‚ÌŠÇ—
 	void SetBullet(Bullet *setbullet);
-
+	//’e‚ÌXV
 	void Update(float elapsedTime);
-
+	//’e‚Ì•`‰æ
 	void Render();
+	//’e‚Ìíœ
+	void Delete(Bullet *deletebullet);
+
 };

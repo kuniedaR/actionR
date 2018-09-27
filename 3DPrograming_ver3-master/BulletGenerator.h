@@ -1,16 +1,22 @@
 #pragma once
 #include <string>
 #include "Bullet.h"
+#include <Effects.h>
 
 class BulletGenerator
 {
 public:
-	BulletGenerator();
+	BulletGenerator(ID3D11Device* device, DirectX::EffectFactory& fx);
 	~BulletGenerator();
 
-	Bullet* Create(ID3D11Device* device);
+	//íeÇÃçÏê¨
+	Bullet* Create();
 
 private:
 
+
 	const wchar_t* playerModelPath = L"Resources\\Models\\Beem.cmo";
+
+	//ÉÇÉfÉã
+	std::unique_ptr<DirectX::Model> m_playerModel;
 };

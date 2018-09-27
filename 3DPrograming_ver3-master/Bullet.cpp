@@ -14,6 +14,8 @@ Bullet::Bullet(GameDefine::ColliderTag tag)
 
 bool Bullet::Update(float elapsedTime)
 {
+	if (!m_active) return false;
+
 	//‘¬“x
 	Vector3 v = m_v;
 
@@ -30,6 +32,8 @@ bool Bullet::Update(float elapsedTime)
 
 void Bullet::Render()
 {
+	if (!m_active) return;
+
 	if (m_game && m_models)
 	{
 		//ƒ‚ƒfƒ‹‚ð•`‰æ
