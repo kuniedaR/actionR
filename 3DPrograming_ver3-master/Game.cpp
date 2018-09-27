@@ -591,10 +591,8 @@ void Game::CollisionEnemy()
 
 	//体力を無くす
 	m_helsE -= 30;
-	//自弾の移動を止める
-	bullet->Move(Bullet::STOP);
 	//自弾の描画を消す
-	bullet->SetActive(false);
+	m_bulletManager->DeleteBullet(bullet);
 }
 
 //カメラの処理

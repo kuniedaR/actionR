@@ -18,6 +18,6 @@ public:
 	//’e‚Ì•`‰æ
 	void Render();
 	//’e‚Ìíœ
-	void Delete(Bullet *deletebullet);
+	void DeleteBullet(Bullet *deletebullet);
 
 };

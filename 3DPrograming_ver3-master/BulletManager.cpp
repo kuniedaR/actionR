@@ -44,7 +44,14 @@ void BulletManager::Render()
 		bullet->Render();
 	}
 }
-
-void BulletManager::Delete(Bullet * deletebullet)
+//íeÇÃçÌèú
+void BulletManager::DeleteBullet(Bullet *deletebullet)
 {
+	auto ite = std::find(m_bullets.begin(), m_bullets.end(), deletebullet);
+
+	if (ite != m_bullets.end())
+	{
+		m_bullets.remove(deletebullet);
+		delete deletebullet;
+	}
 }
