@@ -38,6 +38,7 @@
     <ClInclude Include="Saber.h" />
     <ClInclude Include="BulletManager.h" />
     <ClInclude Include="GameDefine.h" />
+    <ClInclude Include="BulletGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -62,6 +63,7 @@
     <ClCompile Include="Floar.cpp" />
     <ClCompile Include="Saber.cpp" />
     <ClCompile Include="BulletManager.cpp" />
+    <ClCompile Include="BulletGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

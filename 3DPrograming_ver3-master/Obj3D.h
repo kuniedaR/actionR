@@ -21,6 +21,8 @@ protected:
 	//ワールド行列
 	DirectX::SimpleMath::Matrix m_world;
 
+	bool m_active;
+
 public:
 	//コンストラクタ
 	Obj3D();
@@ -42,4 +44,8 @@ public:
 
 	//回転を設定する関数
 	void SetRotation(DirectX::SimpleMath::Quaternion rotation) { m_rotation = rotation; }
+
+	void SetActive(bool active) { m_active = active; }
+
+	bool GetActive() { return m_active; }
 };

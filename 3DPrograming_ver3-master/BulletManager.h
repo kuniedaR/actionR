@@ -2,7 +2,6 @@
 #include <list>
 #include "Bullet.h"
 #include "CollisionCapsule.h"
-
 class BulletManager
 {
 private:
@@ -11,7 +10,11 @@ private:
 
 public:
 
-	bool HitCheck(CollisionCapsule& collision);
+	Bullet* HitCheck(CollisionCapsule& collision);
 
+	void SetBullet(Bullet *setbullet);
 
+	void Update(float elapsedTime);
+
+	void Render();
 };

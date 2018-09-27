@@ -18,3 +18,29 @@ Bullet* BulletManager::HitCheck(CollisionCapsule& collision)
 	}
 	return nullptr;
 }
+
+void BulletManager::SetBullet(Bullet *setbullet)
+{
+	auto ite = std::find(m_bullets.begin(), m_bullets.end(), setbullet);
+
+	if (ite == m_bullets.end())
+	{
+		m_bullets.push_back(setbullet);
+	}
+}
+
+void BulletManager::Update(float elapsedTime)
+{
+	for each (auto bullet in m_bullets)
+	{
+		bullet->Update(elapsedTime);
+	}
+}
+
+void BulletManager::Render()
+{
+	for each (auto bullet in m_bullets)
+	{
+		bullet->Render();
+	}
+}

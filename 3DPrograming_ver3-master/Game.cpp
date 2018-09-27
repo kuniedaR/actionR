@@ -45,12 +45,11 @@ void Game::Initialize(HWND window, int width, int height)
     m_deviceResources->CreateWindowSizeDependentResources();
     CreateWindowSizeDependentResources();
 
-    // TODO: Change the timer settings if you want something other than the default variable timestep mode.
-    // e.g. for 60 FPS fixed timestep update logic, call:
-    /*
-    m_timer.SetFixedTimeStep(true);
-    m_timer.SetTargetElapsedSeconds(1.0 / 60);
-    */
+	//弾の管理
+	m_bulletManager = new BulletManager();
+
+	//弾の作成
+	m_bulletGenerator = new BulletGenerator();
 
 	//プレイヤーの初期位置
 	m_playerpos = Vector3(0.0f, 2.3f, 10.0f);
@@ -188,17 +187,8 @@ void Game::Render()
 	m_font->DrawString(m_sprites.get(), L"Player2", Vector2(690, 530), Colors::Black);
 	m_sprites->End();
 
-	//自弾の描画
-	if (m_drawbulletFlag == true)
-	{
-		m_bullet->Render();
-	}
-
-	//敵弾の描画
-	if (m_drawbulletEFlag == true)
-	{
-		m_bulletE->Render();
-	}
+	//弾の描画
+	m_bulletManager->Render();
 
 	//左体力ゲージの描画 
 	m_sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
@@ -353,28 +343,6 @@ void Game::CreateDeviceDependentResources()
 	capsule.r = 0.5f;		//半径
 	m_enemy->SetCollision(capsule);
 
-	//自弾の作成
-	m_bullet = std::make_unique<Bullet>();
-	m_bullet->SetGame(this);
-	m_bullet->SetModel(m_bulletModel.get());
-
-	capsule.a = Vector3(0.0f, 0.0f, -0.3f);	//芯線の開始点
-	capsule.b = Vector3(0.0f, 0.0f, -0.1f);	//芯線の終了点
-	capsule.r = 0.2f;		//半径
-
-	m_bullet->SetCollision(capsule);
-
-	//敵弾の作成
-	m_bulletE = std::make_unique<BulletE>();
-	m_bulletE->SetGame(this);
-	m_bulletE->SetModel(m_bulletEModel.get());
-
-	capsule.a = Vector3(0.0f, 0.0f, -0.3f);	//芯線の開始点
-	capsule.b = Vector3(0.0f, 0.0f, -0.1f);	//芯線の終了点
-	capsule.r = 0.2f;		//半径
-
-	m_bulletE->SetCollision(capsule);
-
 	//サーベルの作成
 	m_saber = std::make_unique<Saber>();
 	m_saber->SetGame(this);
@@ -447,8 +415,8 @@ void Game::PlayerInput(DX::StepTimer const& timer)
 	//プレイヤーの更新
 	m_player->Update(elapsedTime);
 
-	//弾の更新
-	m_bullet->Update(elapsedTime);
+	//弾管理クラスの更新
+	m_bulletManager->Update(elapsedTime);
 
 	//サーベルの更新
 	m_saber->Update();
@@ -514,15 +482,20 @@ void Game::PlayerInput(DX::StepTimer const& timer)
 	//エンターキー押したら自弾の発射
 	if (m_tracker.pressed.Space)
 	{
-		//フラグが立ったたら自弾描画
-		m_drawbulletFlag = true;
 		//プレイヤーの右腕の位置に自弾描画
 		Vector3 sa(0.45f, -0.4f, -0.1f);
-		m_bullet->SetPosition(sa + m_player->GetPosition());
+
+		ID3D11Device* device = m_deviceResources->GetD3DDevice();
+
+		auto bullet = m_bulletGenerator->Create(device);
+		bullet->SetGame(this);
+
+		bullet->SetPosition(sa + m_player->GetPosition());
 		//プレイヤーの向いてる方向に撃つ
-		m_bullet->SetDirection(m_player->GetDirection());
+		bullet->SetDirection(m_player->GetDirection());
 		//自弾直進
-		m_bullet->Move(Bullet::STRAIGHT);
+		bullet->Move(Bullet::STRAIGHT);
+		m_bulletManager->SetBullet(bullet);
 	}
 }
 
@@ -533,9 +506,6 @@ void Game::EnemyInput(DX::StepTimer const& timer)
 
 	//敵機の更新
 	m_enemy->Update(elapsedTime);
-
-	//敵弾の更新
-	m_bulletE->Update(elapsedTime);
 
 	//敵の操作
 	//キー入力
@@ -572,55 +542,59 @@ void Game::EnemyInput(DX::StepTimer const& timer)
 	//スペースキー押したら弾の発射
 	if (m_trackerE.pressed.R)
 	{
-		//フラグが立ったたら敵弾描画
-		m_drawbulletEFlag = true;
+		ID3D11Device* device = m_deviceResources->GetD3DDevice();
+
+		auto bullet = m_bulletGenerator->Create(device);
+		bullet->SetGame(this);
+
 		//敵の位置に敵弾描画
 		Vector3 enemyPos = m_enemy->GetPosition();
 		enemyPos.y = 1.8f;
-		m_bulletE->SetPosition(enemyPos);
-		//敵の向いてる方向に撃つ
-		m_bulletE->SetDirection(m_enemy->GetDirection());
-		//敵弾直進
-		m_bulletE->Move(BulletE::STRAIGHT);
+		bullet->SetPosition(enemyPos + m_enemy->GetPosition());
+		//プレイヤーの向いてる方向に撃つ
+		bullet->SetDirection(m_enemy->GetDirection());
+		//自弾直進
+		bullet->Move(Bullet::STRAIGHT);
+		m_bulletManager->SetBullet(bullet);
 	}
 }
 
 //プレイヤーと敵弾の当たり判定
 void Game::CollisionPlayer()
 {
-	//プレイヤーと敵弾の当たり判定
-	m_hitFlag = false;
-	if (m_drawbulletEFlag == true)
+	auto bullet = m_bulletManager->HitCheck(*m_player.get());
+	if (bullet==nullptr)
 	{
-		if (Collision::HitCheck_Capsule2Capsule(m_player->GetCollision(), m_bulletE->GetCollision()) == true)
-		{
-			//体力を無くす
-			m_hels -= 30;
-			//敵弾の移動を止める
-			m_bulletE->Move(BulletE::STOP);
-			//敵弾の描画を消す
-			m_drawbulletEFlag = false;
-		}
+		return;
 	}
+
+	//体力を無くす
+	m_hels -= 30;
+	//敵弾の移動を止める
+	bullet->Move(Bullet::STOP);
+	//敵の弾を消す
+	bullet->SetActive(false);
 }
 
-//敵とプレイヤーの弾の当たり判定
+//敵と自弾の弾の当たり判定
 void Game::CollisionEnemy()
 {
-	//敵と自弾の当たり判定
-	m_hitFlag = false;
-	if (m_drawbulletFlag == true)
+	Bullet *bullet = m_bulletManager->HitCheck(*m_enemy.get());
+
+	if (bullet == nullptr)
 	{
-		if (Collision::HitCheck_Capsule2Capsule(m_enemy->GetCollision(), m_bullet->GetCollision()) == true)
-		{
-			//体力を無くす
-			m_helsE -= 30;
-			//自弾の移動を止める
-			m_bullet->Move(Bullet::STOP);
-			//自弾の描画を消す
-			m_drawbulletFlag = false;
-		}
+		// 当たってないので終了
+		return;
 	}
+
+	// 当たった処理
+
+	//体力を無くす
+	m_helsE -= 30;
+	//自弾の移動を止める
+	bullet->Move(Bullet::STOP);
+	//自弾の描画を消す
+	bullet->SetActive(false);
 }
 
 //カメラの処理

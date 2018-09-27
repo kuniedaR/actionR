@@ -24,15 +24,15 @@
 
 #include "Enemy.h"
 
-#include "Bullet.h"
-
-#include "BulletE.h"
-
 #include "Floar.h"
 
 #include "Saber.h"
 
 #include "StepTimer.h"
+
+#include "BulletManager.h"
+
+#include "BulletGenerator.h"
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -165,14 +165,8 @@ private:
 	// 自弾モデル 
 	std::unique_ptr<DirectX::Model> m_bulletModel;
 
-	// 自弾
-	std::unique_ptr<Bullet> m_bullet;
-
 	// 敵弾モデル 
 	std::unique_ptr<DirectX::Model> m_bulletEModel;
-
-	// 敵弾
-	std::unique_ptr<BulletE> m_bulletE;
 
 	// 床モデルハンドル 
 	std::unique_ptr<DirectX::Model> m_floarModel;
@@ -207,12 +201,6 @@ private:
 	//攻撃判定フラグ
 	bool m_hitFlag;
 
-	//自弾のフラグ
-	bool m_drawbulletFlag;
-
-	//敵弾のフラグ
-	bool m_drawbulletEFlag;
-
 	//サーベルのフラグ
 	bool m_drawsaberFlag;
 
@@ -224,4 +212,10 @@ private:
 
 	//プレイヤー体力ゲージのメンバ変数
 	int m_hels;
+
+	//弾の管理クラス
+	BulletManager* m_bulletManager;
+
+	//弾の作成クラス
+	BulletGenerator* m_bulletGenerator;
 };
