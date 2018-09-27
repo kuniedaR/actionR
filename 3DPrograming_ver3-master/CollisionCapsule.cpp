@@ -5,6 +5,12 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
+CollisionCapsule::CollisionCapsule()
+	:m_tag(GameDefine::None)
+{
+
+}
+
 void CollisionCapsule::SetCollision(Collision::Capsule capsule)
 {
 	//ƒRƒŠƒWƒ‡ƒ“î•ñ‚Ìİ’è

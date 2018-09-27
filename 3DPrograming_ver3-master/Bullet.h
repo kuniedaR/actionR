@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "CollisionCapsule.h"
+#include "GameDefine.h"
 
 //弾クラス
 class Bullet : public CollisionCapsule
@@ -27,9 +28,11 @@ private:
 	//自弾の位置
 	DirectX::SimpleMath::Vector3 m_bulletPosition;
 
+	GameDefine::ColliderTag m_parentTag;
+
 public:
 	//コンストラクタ
-	Bullet();
+	Bullet(GameDefine::ColliderTag tag = GameDefine::Bullet);
 
 	//更新
 	bool Update(float elapsedTime) override;
@@ -48,5 +51,9 @@ public:
 	float GetDirection();
 
 	void SetDirection(float direction);
+
+	GameDefine::ColliderTag GetParentTag() {
+		return m_parentTag;
+	}
 
 };

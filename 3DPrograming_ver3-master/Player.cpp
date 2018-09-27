@@ -8,7 +8,7 @@ using namespace DirectX::SimpleMath;
 Player::Player()
 	: m_direction(0.0f), m_moveFlag(STOP)
 {
-
+	m_tag = GameDefine::Player;
 }
 
 bool Player::Update(float elapsedTime)

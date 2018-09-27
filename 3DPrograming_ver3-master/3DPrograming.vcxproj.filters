@@ -37,6 +37,7 @@
     <ClInclude Include="Floar.h" />
     <ClInclude Include="Saber.h" />
     <ClInclude Include="BulletManager.h" />
+    <ClInclude Include="GameDefine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

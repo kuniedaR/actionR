@@ -166,6 +166,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Floar.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameDefine.h" />
     <ClInclude Include="GridFloor.h" />
     <ClInclude Include="Obj3D.h" />
     <ClInclude Include="pch.h" />

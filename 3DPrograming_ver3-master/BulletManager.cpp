@@ -1,13 +1,20 @@
 #include "pch.h"
 #include "BulletManager.h"
 
-bool BulletManager::HitCheck(CollisionCapsule& collision)
+Bullet* BulletManager::HitCheck(CollisionCapsule& collision)
 {
-	int n;
-
-	for (int i = 0;  i < 0; i++)
+	for each (auto bullet in m_bullets)
 	{
+		if (bullet->GetParentTag() == collision.Gettag())
+		{
+			continue;
+		}
 
+		//“G‚ÆŽ©’e‚Ì“–‚½‚è”»’è
+		if (Collision::HitCheck_Capsule2Capsule(collision.GetCollision(), bullet->GetCollision()))
+		{
+			return bullet;
+		}
 	}
-
+	return nullptr;
 }

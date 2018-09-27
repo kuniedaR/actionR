@@ -5,8 +5,9 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-Bullet::Bullet()
+Bullet::Bullet(GameDefine::ColliderTag tag)
 	: m_direction(0.0f), m_moveFlag(STOP)
+	,m_parentTag(tag)
 {
 	m_v = Vector3(0, 0, -0.3f);
 }
