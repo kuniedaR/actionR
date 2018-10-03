@@ -8,10 +8,10 @@ using namespace DirectX::SimpleMath;
 Saber::Saber(GameDefine::ColliderTag tag)
 	:m_parentTag(tag)
 {
-
+	
 }
 
-bool Saber::Update(float elapsedTime)
+bool Saber::Update()
 {
 
 	//	ワールド行列の作成
@@ -34,18 +34,17 @@ void Saber::Render()
 	}
 }
 
+DirectX::SimpleMath::Vector3 Saber::GetPosition()
+{
+	return m_position;
+}
+
 //プレイヤーの位置を所得する関数
 void Saber::SetTarget(DirectX::SimpleMath::Vector3 pos)
 {
 	m_target = pos;
 }
-
-//サーベルの位置
-void Saber::SetSaberPosition(DirectX::SimpleMath::Vector3 pos)
-{
-	m_saberPosition = pos;
-}
-
+//サーベルのビュー行列
 DirectX::SimpleMath::Matrix Saber::GetView()
 {
 	Matrix s = Matrix::CreateLookAt(m_saberPosition, m_target, Vector3(0.0f, 1.0f, 0.0f));

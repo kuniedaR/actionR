@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "BulletManager.h"
-#include <time.h>
 
 //’e‚Æ‚Ì“–‚½‚è”»’è
 Bullet* BulletManager::HitCheck(CollisionCapsule& collision)
@@ -55,14 +54,4 @@ void BulletManager::DeleteBullet(Bullet *deletebullet)
 		m_bullets.remove(deletebullet);
 		delete deletebullet;
 	}
-}
-
-//’e‚ÌŠÔ§ŒÀ
-void BulletManager::TimerBullet(Bullet *timerbullet)
-{
-	time_t t = time(NULL);
-
-
-
-	delete timerbullet;
 }

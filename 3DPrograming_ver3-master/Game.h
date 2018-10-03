@@ -28,6 +28,8 @@
 
 #include "Saber.h"
 
+#include "StepTimer.h"
+
 #include "BulletManager.h"
 
 #include "BulletGenerator.h"
@@ -179,8 +181,8 @@ private:
 	//サーベルモデルハンドル
 	std::unique_ptr<DirectX::Model> m_saberModel;
 
-	////サーベル
-	//std::unique_ptr<Saber> m_saber;
+	//サーベル
+	std::unique_ptr<Saber> m_saber;
 
 	// 影モデルハンドル 
 	std::unique_ptr<DirectX::Model> m_shadowModel;
@@ -221,10 +223,9 @@ private:
 	//弾の作成クラス
 	BulletGenerator* m_bulletGenerator;
 
-	//サーベルの管理クラス
-	SaberManager* m_saberManager;
+	////サーベルの管理クラス
+	//SaberManager* m_saberManager;
 
-	//サーベルの作成クラス
-	SaberGenerator* m_saberGenerator;
-
+	////サーベルの作成クラス
+	//SaberGenerator* m_saberGenerator;
 };

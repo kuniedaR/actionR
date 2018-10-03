@@ -30,6 +30,8 @@ bool Player::Update(float elapsedTime)
 	case LEFT_TURN:		//ç∂âÒì]
 		m_direction += XMConvertToRadians(2.0f);
 		break;
+	case STOP:			//í‚é~
+		v.z = 0.0f;		
 	default:
 		break;
 	}

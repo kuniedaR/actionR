@@ -7,7 +7,7 @@ using namespace DirectX::SimpleMath;
 
 SaberGenerator::SaberGenerator(ID3D11Device* device, EffectFactory& fx)
 {
-	// サーベルをロードしてモデルハンドルを取得する
+	// 弾をロードしてモデルハンドルを取得する
 	m_playerModel = Model::CreateFromCMO(device, playerModelPath, fx);
 }
 
