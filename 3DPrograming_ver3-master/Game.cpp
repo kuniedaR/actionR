@@ -174,7 +174,7 @@ void Game::Render()
 	//サーベルの描画
 	if (m_drawsaberFlag == true)
 	{
-		m_saber->Render();
+		m_saberManager->Render();
 	}
 	//プレイヤー名の描画 
 	m_sprites->Begin();
@@ -322,6 +322,9 @@ void Game::CreateDeviceDependentResources()
 	//弾の作成
 	m_bulletGenerator = new BulletGenerator(device,fx);
 
+	//サーベルの作成
+	m_saberGenerator = new SaberGenerator(device, fx);
+
 	//カプセルの定義
 	Collision::Capsule capsule;
 
@@ -344,17 +347,6 @@ void Game::CreateDeviceDependentResources()
 	capsule.b = Vector3(0.0f, 2.0f, -0.25f);	//芯線の終了点
 	capsule.r = 0.5f;		//半径
 	m_enemy->SetCollision(capsule);
-
-	//サーベルの作成
-	m_saber = std::make_unique<Saber>();
-	m_saber->SetGame(this);
-	m_saber->SetModel(m_saberModel.get());
-
-	capsule.a = Vector3(0.0f, 0.1f, -0.0f);	//芯線の開始点
-	capsule.b = Vector3(0.0f, 1.1f, -0.0f);	//芯線の終了点
-	capsule.r = 0.05f;		//半径
-
-	m_saber->SetCollision(capsule);
 
 	//床の作成
 	m_floar = std::make_unique<Floar>();
@@ -453,18 +445,13 @@ void Game::PlayerInput(DX::StepTimer const& timer)
 		m_drawsaberFlag = true;
 
 		//サーベルがプレイヤーの位置を所得
-		m_saber->SetTarget(m_player->GetPosition());
+		m_saberManager->SetTarget(m_player->GetPosition());
 
 		//プレイヤーの左腕の位置にサーベル描画
-		Vector3 sa(-0.45f, -0.55f, -0.1f);
-
-		float dirs = m_player->GetDirection();
-		//サーベルの回転
-		Quaternion qu = Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), dirs);
-		sa = Vector3::Transform(sa, qu);
+		Vector3 sa(m_player->GetPosition() );
 
 		//サーベルがプレイヤーの位置を追いかける
-		m_saber->SetPosition(sa + m_player->GetPosition());
+		m_saberManager->SetSaberPosition(sa + m_player->GetPosition());
 
 		m_view = m_saber->GetView();
 	}
@@ -496,7 +483,7 @@ void Game::PlayerInput(DX::StepTimer const& timer)
 	m_player->Update(elapsedTime);
 
 	//サーベルの更新
-	m_saber->Update();
+	m_saberManager->Update(elapsedTime);
 }
 
 //敵の入力処理

@@ -7,5 +7,6 @@ namespace GameDefine {
 		Bullet,
 		Player,
 		Enemy,
+		Saber,
 	};
 }

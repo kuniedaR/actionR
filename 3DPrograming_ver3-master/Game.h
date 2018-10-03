@@ -28,11 +28,13 @@
 
 #include "Saber.h"
 
-#include "StepTimer.h"
-
 #include "BulletManager.h"
 
 #include "BulletGenerator.h"
+
+#include "SaberManager.h"
+
+#include "SaberGenerator.h"
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -177,8 +179,8 @@ private:
 	//サーベルモデルハンドル
 	std::unique_ptr<DirectX::Model> m_saberModel;
 
-	//サーベル
-	std::unique_ptr<Saber> m_saber;
+	////サーベル
+	//std::unique_ptr<Saber> m_saber;
 
 	// 影モデルハンドル 
 	std::unique_ptr<DirectX::Model> m_shadowModel;
@@ -218,4 +220,11 @@ private:
 
 	//弾の作成クラス
 	BulletGenerator* m_bulletGenerator;
+
+	//サーベルの管理クラス
+	SaberManager* m_saberManager;
+
+	//サーベルの作成クラス
+	SaberGenerator* m_saberGenerator;
+
 };

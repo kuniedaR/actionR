@@ -173,6 +173,8 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Saber.h" />
+    <ClInclude Include="SaberGenerator.h" />
+    <ClInclude Include="SaberManager.h" />
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +204,8 @@
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Saber.cpp" />
+    <ClCompile Include="SaberGenerator.cpp" />
+    <ClCompile Include="SaberManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

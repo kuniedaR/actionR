@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "CollisionCapsule.h"
 #include "GameDefine.h"
+#include <time.h>
 
 //’eƒNƒ‰ƒX
 class Bullet : public CollisionCapsule
