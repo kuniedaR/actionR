@@ -353,9 +353,9 @@ void Game::CreateDeviceDependentResources()
 	m_saber->SetGame(this);
 	m_saber->SetModel(m_saberModel.get());
 
-	capsule.a = Vector3(0.0f, 0.1f, -0.0f);	//芯線の開始点
-	capsule.b = Vector3(0.0f, 1.1f, -0.0f);	//芯線の終了点
-	capsule.r = 0.05f;		//半径
+	capsule.a = Vector3(0.0f, 0.08f, -0.1f);	//芯線の開始点
+	capsule.b = Vector3(0.0f, 0.7f, -0.9f);	//芯線の終了点
+	capsule.r = 0.04f;		//半径
 	m_saber->SetCollision(capsule);
 
 	//床の作成
@@ -463,20 +463,21 @@ void Game::PlayerInput(DX::StepTimer const& timer)
 		//サーベルがプレイヤーの位置を追いかける
 		m_saber->SetPosition(sa + m_player->GetPosition());
 
+		//サーベルのビュー行列を渡す
 		m_view = m_saber->GetView();
 
+		//プレイヤーの動きを止める
 		m_player->Move(Player::STOP);
 	}
 	//エンターキーを離したらサーベルを消す
 	if (m_trackerS.released.Enter)
 	{
-		//フラグが立ったたらサーベルを消す
+		//フラグが消えたらサーベルを消す
 		m_drawsaberFlag = false;
 	}
 
 	//自弾キートリガーの宣言
-	Keyboard::State bulletkb = m_keyboard->GetState();
-	//自弾キートリガーの更新
+	Keyboard::State bulletkb = m_keyboard->GetState();                                                            
 	m_tracker.Update(bulletkb);
 	//スペースキー押したら自弾の発射
 	if (m_tracker.pressed.Space)
